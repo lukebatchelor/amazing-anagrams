@@ -21,7 +21,10 @@ const Layout = ({ children }) => (
         <Helmet
           title={data.site.siteMetadata.title}
           meta={[
-            { name: 'description', content: 'A small web-app to amke finding anagrams easier' },
+            {
+              name: 'description',
+              content: 'A small web-app to make finding anagrams easier',
+            },
             { name: 'keywords', content: 'anagram' },
           ]}
         >
@@ -33,6 +36,7 @@ const Layout = ({ children }) => (
             flexDirection: 'column',
             alignItems: 'center',
             padding: '15px',
+            height: '100%',
           }}
         >
           {children}

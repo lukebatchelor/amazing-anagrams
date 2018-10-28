@@ -1,0 +1,20 @@
+.startScreenWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.phraseInput {
+  height: 40px;
+  background-color: lightblue;
+  border: 0;
+  border-bottom: 1px solid black;
+  padding: 10px;
+  text-align: center;
+}
+
+.goButton {
+  background-color: green;
+  color: white;
+  padding: 10px;
+}
