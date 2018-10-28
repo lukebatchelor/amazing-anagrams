@@ -22,7 +22,7 @@ module.exports = {
         background_color: '#f1f1f1',
         theme_color: '#ffffff',
         display: 'standalone',
-        icon: 'src/images/trumpFoldIcon.png', // This path is relative to the root of the site.
+        icon: 'src/images/gatsby-icon.png', // This path is relative to the root of the site.
       },
     },
     'gatsby-plugin-offline',
