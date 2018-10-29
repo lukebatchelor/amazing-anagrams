@@ -2,6 +2,7 @@ import React from 'react';
 
 import getAllWordsFromString from './trie';
 import styles from './Anagram.module.css';
+import backArrow from '../images/back-arrow.svg';
 
 export default class Anagram extends React.Component {
   static defaultProps = {
@@ -100,7 +101,7 @@ export default class Anagram extends React.Component {
             className={styles.backButton}
             onClick={this.props.onBackClicked}
           >
-            &#x2b05;
+            <img src={backArrow} alt="" />
           </button>
         </div>
       </div>
