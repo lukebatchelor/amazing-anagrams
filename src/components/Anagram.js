@@ -58,7 +58,7 @@ export default class Anagram extends React.Component {
     const sortedLettersStr = lettersLeft.sort().join('');
     const words = getAllWordsFromString(trie, sortedLettersStr);
     return (
-      <div>
+      <div className={styles.anagramContainer}>
         <h3 style={{ marginLeft: '25px' }}>
           &ldquo;
           {this.props.startString}
@@ -78,13 +78,13 @@ export default class Anagram extends React.Component {
             ))}
             &rdquo;
           </div>
-          <p>
+          <p style={{ fontSize: '18px' }}>
             Select words below to create your anagram
             <br />
             You can remove selected words by clicking them above.
           </p>
-          <div>Letters left: [ {lettersLeft.join(', ')} ]</div>
         </div>
+        <div>Letters left: [ {lettersLeft.join(', ')} ]</div>
         <div className={styles.wordContainer}>
           {words.map(word => (
             <div
