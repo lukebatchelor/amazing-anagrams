@@ -6,9 +6,9 @@
 
 .phraseInput {
   height: 40px;
-  background-color: lightblue;
+  background-color: transparent;
   border: 0;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid grey;
   padding: 10px;
   text-align: center;
 }
@@ -17,4 +17,15 @@
   background-color: green;
   color: white;
   padding: 10px;
+  border-radius: 10px;
+  width: 220px;
+  font-size: 25px;
+  font-family: sans-serif;
+}
+
+.flexStretched {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0;
+  justify-content: center;
 }

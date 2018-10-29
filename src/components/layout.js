@@ -35,7 +35,7 @@ const Layout = ({ children }) => (
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            padding: '15px',
+            padding: '20px',
             height: '100%',
           }}
         >

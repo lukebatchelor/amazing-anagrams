@@ -28,6 +28,7 @@ export default class App extends React.Component {
     const newValue = e.target.value;
     this.startString = newValue;
   };
+
   onGoPressed = () => {
     if (this.startString.length > 0) {
       this.setState({
@@ -38,9 +39,13 @@ export default class App extends React.Component {
     }
   };
 
+  onBackClicked = () => {
+    this.setState({ curScreen: START_SCREEN });
+  };
+
   render() {
     return (
-      <div>
+      <>
         {this.state.curScreen === START_SCREEN && (
           <Start
             onPhraseChange={this.onPhraseChange}
@@ -48,9 +53,13 @@ export default class App extends React.Component {
           />
         )}
         {this.state.curScreen === ANAGRAM_SCREEN && (
-          <Anagram trie={this.state.trie} startString={this.startString} />
+          <Anagram
+            trie={this.state.trie}
+            startString={this.startString}
+            onBackClicked={this.onBackClicked}
+          />
         )}
-      </div>
+      </>
     );
   }
 }

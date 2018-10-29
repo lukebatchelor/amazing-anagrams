@@ -8,6 +8,11 @@ html {
   margin: 0;
   background-color: #f1f1f1;
   text-align: center;
+  height: 100%;
+}
+#___gatsby,
+#___gatsby > div {
+  height: 100%;
 }
 
 article,

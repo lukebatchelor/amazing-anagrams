@@ -43,6 +43,15 @@
   background-color: lightblue;
 }
 
+.backButton {
+  position: fixed;
+  top: 20px;
+  left: 10px;
+  font-size: 30px;
+  border: none;
+  background: transparent;
+}
+
 @keyframes wiggle {
   0% {
     transform: rotate(-3deg);

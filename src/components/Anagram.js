@@ -1,12 +1,13 @@
 import React from 'react';
-import getAllWordsFromString from './trie';
 
+import getAllWordsFromString from './trie';
 import styles from './Anagram.module.css';
 
 export default class Anagram extends React.Component {
   static defaultProps = {
     trie: null,
     startString: '',
+    onBackClicked: () => {},
   };
 
   state = {
@@ -20,7 +21,6 @@ export default class Anagram extends React.Component {
       .toLowerCase()
       .replace(/ /g, '')
       .split('');
-    console.log(lettersLeft);
     this.setState({ lettersLeft });
   }
 
@@ -58,10 +58,14 @@ export default class Anagram extends React.Component {
     const words = getAllWordsFromString(trie, sortedLettersStr);
     return (
       <div>
-        <h3>"{this.props.startString}"</h3>
+        <h3 style={{ marginLeft: '25px' }}>
+          &ldquo;
+          {this.props.startString}
+          &rdquo;
+        </h3>
         <div>
           <div className={styles.phraseContainer}>
-            "
+            &ldquo;
             {phrase.map(word => (
               <span
                 key={'p-' + word}
@@ -71,7 +75,7 @@ export default class Anagram extends React.Component {
                 {word}
               </span>
             ))}
-            "
+            &rdquo;
           </div>
           <p>
             Select words below to create your anagram
@@ -90,6 +94,14 @@ export default class Anagram extends React.Component {
               {word}
             </div>
           ))}
+        </div>
+        <div>
+          <button
+            className={styles.backButton}
+            onClick={this.props.onBackClicked}
+          >
+            &#x2b05;
+          </button>
         </div>
       </div>
     );

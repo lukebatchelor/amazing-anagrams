@@ -11,21 +11,26 @@ export default class Start extends React.Component {
   render() {
     return (
       <div className={styles.startScreenWrapper}>
-        <h1>START SCREEN</h1>
+        <h1 style={{ marginBottom: '30px' }}>Amazing Anagrams</h1>
 
-        <p>Find anagrams of your favourite words, names or phrases!</p>
-        <div style={{ marginTop: '30px' }}>
-          <input
-            type="text"
-            placeholder="Your phrase here"
-            className={styles.phraseInput}
-            onChange={this.props.onPhraseChange}
-          />
-        </div>
-        <div style={{ marginTop: '30px' }}>
-          <button className={styles.goButton} onClick={this.props.onGoPressed}>
-            Go!
-          </button>
+        <div className={styles.flexStretched}>
+          <p>Find anagrams of your favourite words, names or phrases!</p>
+          <div style={{ marginTop: '30px' }}>
+            <input
+              type="text"
+              placeholder="Your phrase here"
+              className={styles.phraseInput}
+              onChange={this.props.onPhraseChange}
+            />
+          </div>
+          <div style={{ marginTop: '30px' }}>
+            <button
+              className={styles.goButton}
+              onClick={this.props.onGoPressed}
+            >
+              Go!
+            </button>
+          </div>
         </div>
       </div>
     );
