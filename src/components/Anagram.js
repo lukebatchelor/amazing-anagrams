@@ -16,6 +16,8 @@ export default class Anagram extends React.Component {
     lettersLeft: [],
   };
 
+  optionsContainerRef = React.createRef();
+
   componentDidMount() {
     const { startString } = this.props;
     const lettersLeft = startString
@@ -36,7 +38,10 @@ export default class Anagram extends React.Component {
       newLettersLeft.splice(newLettersLeft.indexOf(letter), 1);
     }
 
-    this.setState({ lettersLeft: newLettersLeft, phrase: newPhrase });
+    this.setState(
+      { lettersLeft: newLettersLeft, phrase: newPhrase },
+      this.scrollOptionsToTop
+    );
   };
 
   onPhraseClicked = e => {
@@ -47,7 +52,14 @@ export default class Anagram extends React.Component {
     const newPhrase = Array.from(phrase);
     newPhrase.splice(phrase.indexOf(word), 1);
 
-    this.setState({ lettersLeft: newLettersLeft, phrase: newPhrase });
+    this.setState(
+      { lettersLeft: newLettersLeft, phrase: newPhrase },
+      this.scrollOptionsToTop
+    );
+  };
+
+  scrollOptionsToTop = () => {
+    this.optionsContainerRef.current.scrollTo(0, 0);
   };
 
   render() {
@@ -85,7 +97,7 @@ export default class Anagram extends React.Component {
           </p>
         </div>
         <div>Letters left: [ {lettersLeft.join(', ')} ]</div>
-        <div className={styles.wordContainer}>
+        <div className={styles.wordContainer} ref={this.optionsContainerRef}>
           {words.map(word => (
             <div
               key={word}
