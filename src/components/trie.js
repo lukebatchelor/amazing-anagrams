@@ -1,48 +1,63 @@
 import memoize from 'fast-memoize';
 
-// Adapted from: https://gist.github.com/JeffML/0cee0d09d32347ea95e0f9cb4f851cd8
-function* combinationsGenerator(remainder, current = []) {
-  if (remainder.length === 0) {
-    yield current;
-  } else {
-    yield* combinationsGenerator(
-      remainder.slice(1, remainder.length),
-      current.concat(remainder[0])
-    );
-    yield* combinationsGenerator(remainder.slice(1, remainder.length), current);
+/**
+ * Recursive function for searching a down a trie. Prefixes is a Map in the shape:
+ * {
+ *   [prefix]: {
+ *     ptr: <a reference to the part of the trie we are in>
+ *     letters: <the list of letters we still have left to use>
+ *   }
+ * }
+ * Where the "prefix" key is a validPrefix withing the trie (there exists at least
+ * one more word that starts with that string).
+ */
+function getAllWordsFromStringRecurse(trie, prefixes, words) {
+  if (prefixes.size === 0) {
+    return Array.from(words).sort((a, b) => b.length - a.length);
   }
-}
 
-function wordExists(trie, letters) {
-  let nextLetter = letters.shift();
-  let curNode = trie;
-  while (nextLetter) {
-    if (curNode[nextLetter]) {
-      curNode = curNode[nextLetter];
-      nextLetter = letters.shift();
-    } else {
-      return false;
+  const newPrefixes = new Map();
+  prefixes.forEach((cur, prefix) => {
+    const { ptr, letters } = cur;
+    if (ptr['$']) {
+      words.add(prefix);
     }
-  }
-  if (curNode['$']) return true;
-  return false;
+    letters.forEach((letter, idx) => {
+      if (ptr[letter]) {
+        const lettersLeft = [...letters];
+        lettersLeft.splice(idx, 1);
+        newPrefixes.set(`${prefix}${letter}`, {
+          ptr: ptr[letter],
+          letters: lettersLeft,
+        });
+      }
+    });
+  });
+  return getAllWordsFromStringRecurse(trie, newPrefixes, words);
 }
 
+/**
+ * Get all the words in a trie that can be made up using the letters in string.
+ */
 function getAllWordsFromString(trie, string) {
-  if (!trie || !string) {
-    return [];
-  }
   const letters = string.split('');
-  const generator = combinationsGenerator(letters);
+  const prefixes = new Map();
+  // We use a set to automatically take care of de-duping for us
   const words = new Set();
-  for (let next of generator) {
-    if (wordExists(trie, [...next])) {
-      words.add(next.join(''));
-    }
-  }
-  const sorted = Array.from(words).sort((a, b) => b.length - a.length);
 
-  return sorted;
+  // To start the search, we'll create the inital "pointers" to where we are searching
+  letters.forEach((letter, idx) => {
+    if (trie[letter]) {
+      const lettersLeft = [...letters];
+      lettersLeft.splice(idx, 1);
+      // For each pointer we track the current total prefix (just the starting
+      // letter in this case), a reference to where we are in the trie (ptr)
+      // and a list of letters that are still left to use
+      prefixes.set(letter, { ptr: trie[letter], letters: lettersLeft });
+    }
+  });
+
+  return getAllWordsFromStringRecurse(trie, prefixes, words);
 }
 
 const memoizedGetAllWordsFromString = memoize(getAllWordsFromString);
