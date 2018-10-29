@@ -1,4 +1,5 @@
 import React from 'react';
+import { List, AutoSizer } from 'react-virtualized';
 
 import getAllWordsFromString from './trie';
 import styles from './Anagram.module.css';
@@ -14,6 +15,7 @@ export default class Anagram extends React.Component {
   state = {
     phrase: [],
     lettersLeft: [],
+    scrollToIdx: 0,
   };
 
   optionsContainerRef = React.createRef();
@@ -38,10 +40,11 @@ export default class Anagram extends React.Component {
       newLettersLeft.splice(newLettersLeft.indexOf(letter), 1);
     }
 
-    this.setState(
-      { lettersLeft: newLettersLeft, phrase: newPhrase },
-      this.scrollOptionsToTop
-    );
+    this.setState({
+      lettersLeft: newLettersLeft,
+      phrase: newPhrase,
+      scrollToIdx: 0,
+    });
   };
 
   onPhraseClicked = e => {
@@ -50,12 +53,19 @@ export default class Anagram extends React.Component {
     const { phrase, lettersLeft } = this.state;
     const newLettersLeft = [...lettersLeft, ...letters];
     const newPhrase = Array.from(phrase);
-    newPhrase.splice(phrase.indexOf(word), 1);
+    const removedWordIdx = phrase.indexOf(word);
+    newPhrase.splice(removedWordIdx, 1);
 
-    this.setState(
-      { lettersLeft: newLettersLeft, phrase: newPhrase },
-      this.scrollOptionsToTop
-    );
+    // We'll automatically sroll the user to the word they deleted
+    const sortedLettersStr = newLettersLeft.sort().join('');
+    const words = getAllWordsFromString(this.props.trie, sortedLettersStr);
+    const scrollToIdx = words.indexOf(word);
+
+    this.setState({
+      lettersLeft: newLettersLeft,
+      phrase: newPhrase,
+      scrollToIdx,
+    });
   };
 
   scrollOptionsToTop = () => {
@@ -64,7 +74,7 @@ export default class Anagram extends React.Component {
 
   render() {
     const { trie } = this.props;
-    const { phrase, lettersLeft } = this.state;
+    const { phrase, lettersLeft, scrollToIdx } = this.state;
     // We sort and join the lettersLeft arr so that we can take full advantage
     // of the memoization (we'll always get equal strings passed in)
     const sortedLettersStr = lettersLeft.sort().join('');
@@ -98,15 +108,27 @@ export default class Anagram extends React.Component {
         </div>
         <div>Letters left: [ {lettersLeft.join(', ')} ]</div>
         <div className={styles.wordContainer} ref={this.optionsContainerRef}>
-          {words.map(word => (
-            <div
-              key={word}
-              className={styles.word}
-              onClick={this.onWordClicked}
-            >
-              {word}
-            </div>
-          ))}
+          <AutoSizer>
+            {({ width, height }) => (
+              <List
+                height={height}
+                rowHeight={46}
+                rowCount={words.length}
+                scrollToIndex={scrollToIdx}
+                rowRenderer={({ index, key, style }) => (
+                  <div
+                    key={key}
+                    style={style}
+                    className={styles.word}
+                    onClick={this.onWordClicked}
+                  >
+                    {words[index]}
+                  </div>
+                )}
+                width={width}
+              />
+            )}
+          </AutoSizer>
         </div>
         <div>
           <button

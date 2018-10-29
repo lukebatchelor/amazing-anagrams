@@ -17,7 +17,8 @@
     "lint-staged": "^7.3.0",
     "react": "^16.5.1",
     "react-dom": "^16.5.1",
-    "react-helmet": "^5.2.0"
+    "react-helmet": "^5.2.0",
+    "react-virtualized": "^9.21.0"
   },
   "keywords": [
     "gatsby"
