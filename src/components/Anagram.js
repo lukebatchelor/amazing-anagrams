@@ -1,7 +1,7 @@
 import React from 'react';
 import { List, AutoSizer } from 'react-virtualized';
 
-import getAllWordsFromString from './trie';
+import getAllWordsFromString, { getAllAnagramsFromString } from './trie';
 import styles from './Anagram.module.css';
 import backArrow from '../images/back-arrow.svg';
 
@@ -79,6 +79,8 @@ export default class Anagram extends React.Component {
     // of the memoization (we'll always get equal strings passed in)
     const sortedLettersStr = lettersLeft.sort().join('');
     const words = getAllWordsFromString(trie, sortedLettersStr);
+    const anagrams = getAllAnagramsFromString(trie, sortedLettersStr);
+    console.log('here', phrase, words[0]);
     return (
       <div className={styles.anagramContainer}>
         <h3 style={{ marginLeft: '25px' }}>
